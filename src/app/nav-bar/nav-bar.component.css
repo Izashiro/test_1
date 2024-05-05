@@ -1,0 +1,66 @@
+/* Color of the links BEFORE scroll */
+.navbar-scroll .nav-link,
+.navbar-scroll .navbar-toggler-icon,
+.navbar-scroll  {
+  color: #ffffff;
+}
+
+/* Color of the navbar BEFORE scroll */
+.navbar-scroll {
+  background-color: #1363DF;
+}
+
+
+/* Color of the navbar AFTER scroll */
+.navbar-scrolled {
+  background-color: rgba(255, 255, 255, 0.918);
+}
+
+/* An optional height of the navbar AFTER scroll */
+.navbar.navbar-scroll.navbar-scrolled {
+  padding-top: auto;
+  padding-bottom: auto;
+}
+
+h3 {
+  color: whitesmoke;
+}
+
+.signin {
+  color: #1363DF;
+  /*height: 30px;*/
+}
+
+.offcanvas-header {
+  background-color: #966767;
+}
+
+.main-bg {
+  padding-left: 10px;
+  padding-right: 10px;
+  background: rgb(255, 255, 255);
+  background: linear-gradient( #ffffff, #EBD4D4);
+  height:100vh;
+}
+
+body {
+  background: #F4F7FD;
+  height: 100%;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+
+/* Text Color */
+.text-whitesmoke {
+  color: whitesmoke;
+}
+
+.text-name {
+  color: #463333;
+  text-align: center;
+}
+.nav-item {
+  color: red;
+}

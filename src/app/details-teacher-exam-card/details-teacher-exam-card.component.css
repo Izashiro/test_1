@@ -1,0 +1,88 @@
+.main-bg {
+  background: #ffffff;
+  min-height:100vh;
+  padding-top: 88px;
+}
+
+.cl-head {
+  color: #1363bf;
+  height: 1px;
+}
+
+.row1 {
+  border: 1px solid #1363bf;
+  border-radius: 5px;
+  min-height: 400px;
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+.chatbox {
+  color: #1363bf;
+  border: 1px solid #1363bf;
+  border-radius: 5px;
+  padding: 20px 10px 20px 20px;
+}
+
+.leftSide {
+  padding-right: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+::placeholder {
+  color: #000;
+}
+
+.row2 input {
+  border: 0;
+  outline: none;
+  margin-top: 20px;
+  padding: 10px 40px;
+  border: 1px solid #1363bf;
+  color: #1363bf;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 300;
+  border-radius: 5px;
+}
+
+.row2 button {
+  margin-top: 20px;
+  padding: 10px;
+  width: 100%;
+}
+
+
+/*
+.chatbox__messages.mine .message-box {
+  float: right;
+}
+.chatbox__messages .message-box {
+  float: left;
+}
+
+.chatbox .message-box {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 1em 0;
+  height: auto;
+  width: 55%;
+  border-radius: 5px;
+  margin: 2em 1em;
+  overflow: auto;
+}
+
+.chatbox .message-box > p.name {
+  color: rgb(25, 10, 10);
+  font-size: .8em;
+}
+
+.chatbox .message-box > p.message {
+  color: rgb(10, 10, 10);
+  font-size: 1em;
+}
+*/

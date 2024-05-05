@@ -1,0 +1,132 @@
+<div class=" main-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-7">
+        <h2>{{examDetails.examName}}</h2>
+        <hr class="cl-head">
+        <br>
+
+        <h4>{{examDetails.teacherName}}</h4>
+        <i class="fa fa-calendar"></i> {{getExamDate(examDetails.examDate)}} {{getExamMonth(examDetails.examDate)}} <br>
+        <i class="fa fa-clock"></i> {{examDetails.startTime}} <br>
+        <i class="fa fa-stopwatch"></i> {{examDetails.duration}} minutes <br>
+        <br><br>
+        <div *ngIf="!hide">
+          <button class="btn btn-dark">{{remHour}}</button> <b> : </b>
+          <button class="btn btn-dark"> {{remMinute}} </button> <b> : </b>
+          <button class="btn btn-dark">{{remSecond}}</button>
+        </div>
+        <div *ngIf="hide">
+          <button class="btn btn-light">{{remHour}}</button> <b> : </b>
+          <button class="btn btn-light"> {{remMinute}} </button> <b> : </b>
+          <button class="btn btn-light">{{remSecond}}</button>
+        </div>
+        <br><br>
+      <div class="btn-button">
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModalStart" [disabled]="!examDetails.hasStarted" *ngIf="!examGoingOn(examDetails)" (click)="onLeaveClick(examDetails)">Start Exam </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalStart" *ngIf="examGoingOn(examDetails)" (click)="onLeaveClick(examDetails)"><b>Start Exam</b> </button>&nbsp;&nbsp;
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModalLeave" (click)="onLeaveClick(examDetails)">Leave Exam </button>
+      </div>
+      <br><br>
+      <div class="manual">
+        <h4>GUIDELINES</h4>
+        <hr class="cl-head">
+        <h5>During the exam -</h5>
+        <input type="checkbox" checked> You must keep the !BLINK tab full of your entire screen. <br>
+        <input type="checkbox" checked> You can not change the exam tab. <br>
+        <input type="checkbox" checked> Changing a tab will send notification towards the to the teacher. <br>
+        <input type="checkbox" checked> Screen recond will be sent once exam ends. <br>
+        <input type="checkbox" checked> You can't outsight screen for more than {{examDetails.outSightTime}} seconds. <br>
+        <input type="checkbox" checked> Your camera footage will be sent to teacher as soon as you are detected to be suspicious.
+      </div>
+      <div class="row mt-5" *ngIf="isExamFinish()">
+        <h4>QUESTION</h4>
+        <hr class="cl-head">
+        <object [data]="examDetails.question | safe" type="application/pdf" height="700"> </object>
+      </div>
+    </div>
+      <div class="col-5">
+        <h2>Participant List&nbsp;&nbsp;<i class="fa fa-users"></i></h2>
+        <hr class="cl-head">
+        <br>
+        <div *ngFor="let participant of participants">
+          &nbsp;&nbsp;&nbsp;
+          <span class="fa fa-user-circle"></span>
+          &nbsp;{{participant.fullName}}
+        <hr>
+        </div>
+
+        <!-- <app-face-recognition></app-face-recognition> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--Modal Class-->
+  <!--start-->
+  <div class="modal fade" id="exampleModalStart" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Confirm at Start</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <b>[Exam Name : {{currentExam.examName}}]</b>
+          <br>
+          <b>[Exam Code : {{model.examCode}}]</b>
+          <hr>
+          <b>INSTRUCTIONS</b><br>
+          <input type="checkbox"> Share your entine screen.
+          <br>
+          <input type="checkbox"> Sharing a specific tab won't let you proceed.
+          <br>
+          <input type="checkbox"> Allow your camera permission.
+          <br>
+          <input type="checkbox"> Wait until your face is recognized and caliberate
+          <br>
+          <input type="checkbox"> In order to caliberate you need to click on 9 red dots. Upon clicking 5 times on each dot, they will turn green. You can start the exam as soon as all the dots are turned green.
+          <br>
+          <input type="checkbox"> Calibration is needed for accuracy.
+          <br>
+          <input type="checkbox"> You may be wrongly identified as suspicious if not properly caliberated.
+          <br>
+          <br>
+          <b>I have read all the instructions and want to start the exam</b>
+        </div>
+        <form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="examStart(currentExam)">Yes</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!--Modal Class-->
+  <!--Leave-->
+  <div class="modal fade" id="exampleModalLeave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirm Leave</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you confirm to leave exam?
+            <br>
+            <b>[Exam Name : {{model.examName}}]</b>
+            <br>
+            <b>[Exam Code : {{model.examCode}}]</b>
+          </div>
+          <form>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                  <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="leaveExam()">Yes</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,28 @@
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<table id="customers">
+  <tr>
+    <th *ngFor="let item of headers; index as i" scope="col">{{ item }}</th>
+  </tr>
+  <tr
+    *ngFor="let item of cols; index as i"
+    ngclass="text-right border-b border-opacity-20 dark:border-gray-700 dark:bg-gray-800"
+  >
+    <td *ngFor="let cell of item; index as j" class="px-3 py-2 text-left">
+      <span>{{ cell }}</span>
+      <button
+        *ngIf="evaluate(j)"
+        (click)="view(id, item[0], headers[j], item[1])"
+        data-toggle="modal"
+        data-target="#exampleModalLong"
+      >
+        view
+      </button>
+    </td>
+  </tr>
+</table>

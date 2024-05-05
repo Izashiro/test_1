@@ -1,0 +1,139 @@
+
+<div class=" main-bg">
+    <div class="container">
+        <div>
+            <button type="button" class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#exampleModalJoin" style="background-color: #1363bf; color:white"><i class="fa fa-plus"></i> <b> Join New Exam</b></button>
+        </div>
+        <br><br>
+      <div class="row">
+        <div class="col-lg-4" *ngFor="let exam of listOfExams">
+        <div class="card card-margin">
+            <div class="card-header no-border id">
+                <h3 class="card-title">{{exam.examName}}</h3>
+            </div>
+            <div class="card-header no-border code justify-content-between">
+            <span class="badge bg-light text-dark">Exam Code: {{exam._id}}</span>
+            </div>
+            <div class="card-body pt-0">
+                <div class="widget-49">
+                    <div class="widget-49-title-wrapper">
+                        <div class="widget-49-date-success">
+                            <span class="widget-49-date-day">{{getExamDate(exam.examDate)}}</span>
+                            <span class="widget-49-date-month">{{getExamMonth(exam.examDate)}}</span>
+                        </div>
+                        <div class="widget-49-meeting-info">
+                            <h4><span class="widget-49-pro-title">{{exam.teacherName}}</span></h4>
+                            <span class="widget-49-meeting-time">Start at {{exam.startTime}}</span>
+                            <span class="widget-49-meeting-time"><span>Duration: {{exam.duration}} minutes</span></span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="btn-button">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModalStart" [disabled]="!exam.hasStarted" *ngIf="!examGoingOn(exam)" (click)="onLeaveClick(exam)">Start Exam </button>
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModalStart" *ngIf="examGoingOn(exam)" (click)="onLeaveClick(exam)"><b>Start Exam</b> </button>  &nbsp;
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModalLeave" (click)="onLeaveClick(exam)">Leave Exam </button>
+                    </div>
+                    <div class="widget-49-meeting-action">
+                        <a class="btn btn-sm btn-flash-border-primary" routerLink="['teacher/examdetails', '{{exam._id}}']" (click)="viewMoreRouting(exam)">View More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    </div>
+  </div>
+
+  <!--Modal Class-->
+  <!--start-->
+  <div class="modal fade" id="exampleModalStart" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Confirm at Start</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <b>[Exam Name : {{currentExam.examName}}]</b>
+          <br>
+          <b>[Exam Code : {{model.examCode}}]</b>
+          <hr>
+          <b>INSTRUCTIONS</b><br>
+          <input type="checkbox"> Share your entine screen.
+          <br>
+          <input type="checkbox"> Sharing a specific tab won't let you proceed.
+          <br>
+          <input type="checkbox"> Allow your camera permission.
+          <br>
+          <input type="checkbox"> Wait until your face is recognized and caliberate
+          <br>
+          <input type="checkbox"> In order to caliberate you need to click on 9 red dots. Upon clicking 5 times on each dot, they will turn green. You can start the exam as soon as all the dots are turned green.
+          <br>
+          <input type="checkbox"> Calibration is needed for accuracy.
+          <br>
+          <input type="checkbox"> You may be wrongly identified as suspicious if not properly caliberated.
+          <br>
+          <br>
+          <b>I have read all the instructions and want to start the exam</b>
+        </div>
+        <form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="examStart(currentExam)">Yes</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!--Modal Class-->
+  <!--Leave-->
+  <div class="modal fade" id="exampleModalLeave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirm Leave</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you confirm to leave exam?
+            <br>
+            <b>[Exam Name : {{model.examName}}]</b>
+            <br>
+            <b>[Exam Code : {{model.examCode}}]</b>
+          </div>
+          <form>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                  <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="leaveExam()">Yes</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal -->
+    <!-- Join -->
+    <div class="modal fade" id="exampleModalJoin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Join New Exam</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="recipient-code" class="col-form-label"><h6>Exam Code:</h6></label>
+                <input type="text" class="form-control" id="recipient-code" placeholder="624db81ef3b5c46536c72936" ngDefaultControl [(ngModel)]="model.examCode" [ngModelOptions]="{standalone: true}" >
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="join()">Join</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>

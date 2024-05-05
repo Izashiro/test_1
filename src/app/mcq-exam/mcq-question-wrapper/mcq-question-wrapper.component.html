@@ -1,0 +1,7 @@
+<ng-template #questionHost questionHost></ng-template>
+<button (click)="save()">save</button>
+<div *ngIf="obtainedMarks">
+   <h1>
+    You got {{obtainedMarks}} out of {{totalMarks}}
+   </h1>
+</div>

@@ -1,0 +1,9 @@
+.correct-answer {
+    background-color: lightgreen;
+    border-radius: 5px;
+}
+
+.wrong-answer {
+    background-color: lightcoral;
+    border-radius: 5px;
+}

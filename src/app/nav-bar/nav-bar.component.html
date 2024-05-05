@@ -1,0 +1,62 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-scroll fixed-top shadow-0 border-bottom border-dark">
+  <div class="container">
+    <img src="../../assets/image/logo.png" alt="!BLINK" class="logo" width="5%" >&nbsp; &nbsp;<h2 class="mt-3"> BLINK</h2>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#!"><b>About</b></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#!"><b>Features</b></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#!"><b>Demo</b></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#!"><b>Contact</b></a>
+        </li>
+        <button type="button" class="btn btn-light signin ms-3" routerLink="/login" routerLinkActive="active" *ngIf="!getStatus()" ><b>Sign In</b></button>
+        <button type="button" class="btn btn-light ms-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" *ngIf="getStatus()" (click)="getProfile()"><i class="fa fa-user" ></i><b></b></button>
+        <button type="button" class="btn btn-light ms-3" (click)="onLogout()" *ngIf="getStatus()"><i class="fas fa-sign-out-alt"></i></button>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+      <h3 id="offcanvasRightLabel">Profile</h3>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class=" main-bg">
+      <br> <br>
+      <div>
+        <h1 class="logo-badge text-center"><span class="fa fa-user-circle"></span></h1>
+        <br>
+        <h4 class="text-name">{{userDetails.fullName}}</h4>
+      </div>
+      <br>
+      <br>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><b>Email : </b><p class="normal-text">{{userDetails.email}}</p></li>
+        <br>
+        <li class="list-group-item"><b>Institute : </b><p class="normal-text">{{userDetails.institute}}</p></li>
+        <br>
+        <li class="list-group-item"><b>Phone Number : </b><p class="normal-text">{{userDetails.phone_number}}</p></li>
+        <br>
+        <li class="list-group-item" *ngIf="!userDetails.isTeacher"><b>Batch : </b><p class="normal-text">{{userDetails.batch}}</p></li>
+        <br *ngIf="!userDetails.isTeacher">
+        <li class="list-group-item" *ngIf="!userDetails.isTeacher"><b>Roll : </b><p class="normal-text">{{userDetails.roll}}</p></li>
+        <br *ngIf="!userDetails.isTeacher">
+        <li class="list-group-item" *ngIf="userDetails.isTeacher"><b>Designation : </b><p class="normal-text">{{userDetails.designation}}</p></li>
+        <br>
+      </ul>
+  </div>
+</div>

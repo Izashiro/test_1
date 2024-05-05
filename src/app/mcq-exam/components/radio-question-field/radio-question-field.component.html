@@ -1,0 +1,24 @@
+{{index+1}}.
+<div [formGroup]="questionForm" [ngClass]="{ 'correct-answer': status === STATUS.RIGHT, 'wrong-answer': status === STATUS.WRONG }">
+    <div>
+        <mat-label>
+            {{ question.question }} - {{ question.fullMarks }}
+        </mat-label>
+        <mat-radio-group
+            id="radiogroup"
+            aria-label="Select an option"
+            formControlName="{{ index }}"
+        >
+            <mat-radio-button
+                *ngFor="let option of question.options; let i = index"
+                [value]="i"
+                style="display: block"
+                >{{ option }}
+            </mat-radio-button>
+        </mat-radio-group>
+    </div>
+</div>
+
+<div *ngIf="status == STATUS.WRONG">
+    Correct answer is {{question.correctAnswer}}
+</div>

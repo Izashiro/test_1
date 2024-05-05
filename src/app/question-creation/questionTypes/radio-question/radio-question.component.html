@@ -1,0 +1,39 @@
+<form [formGroup]="questionForm">
+    {{index + 1}} .<br>
+    <mat-form-field appearance="outline">
+      <mat-label>Question</mat-label>
+      <input matInput formControlName="question" placeholder="Question">
+      
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Full Marks</mat-label>
+      <input type="number" matInput formControlName="fullMarks" placeholder="Full Marks">
+    </mat-form-field>
+    
+    <div formArrayName="options">
+      <div *ngFor="let option of options.controls; let i = index" class="option-field">
+
+        <span class="option-prefix">{{ getOptionPrefix(i) }}.</span>
+        <mat-form-field appearance="outline">
+          <input matInput [formControlName]="i" placeholder="Option">
+          <mat-icon matSuffix (click)="removeOption(i)">cancel</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+  
+    <button mat-button type="button" (click)="addOption()">Add Option</button>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Correct Answer</mat-label>
+      <mat-select formControlName="correctAnswer">
+        <mat-option *ngFor="let option of options.controls; let i = index" [value]="i">
+          {{ getOptionPrefix(i) }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+
+  <mat-icon (click)="deleteComponent()">delete</mat-icon>
+
+  <!-- <button (click)="check()">check</button> -->
+  

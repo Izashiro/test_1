@@ -1,0 +1,47 @@
+
+.main-bg {
+  padding-left: 10px;
+  padding-right: 10px;
+  background: rgb(255, 255, 255);
+  background: linear-gradient( #ffffff, #a3fbf7);
+  height:100vh;
+}
+
+body {
+  background: #F4F7FD;
+  height: 100%;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+
+/* Text Align */
+.label {
+  text-align: left !important;
+}
+.text-c {
+  text-align: center;
+}
+.text-l {
+  text-align: left;
+}
+.text-r {
+  text-align: right;
+}
+.text-j {
+  text-align: justify;
+}
+
+.normal-text {
+  color: #0c8882;
+}
+
+/* Text Color */
+.text-whitesmoke {
+  color: whitesmoke;
+}
+
+.text-name {
+  color: #0c8882;
+}

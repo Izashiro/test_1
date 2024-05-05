@@ -1,0 +1,4 @@
+
+
+<app-teacher-exam-card *ngIf="userDetails.isTeacher"></app-teacher-exam-card>
+<app-student-exam-card *ngIf="!userDetails.isTeacher"></app-student-exam-card>

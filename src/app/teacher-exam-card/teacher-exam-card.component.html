@@ -1,0 +1,216 @@
+
+
+
+  <div class=" main-bg">
+    <div class="container">
+      <div>
+        <button type="button" class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#exampleModalCreate" *ngIf="userDetails.isTeacher" style="background-color: #1363bf; color:white"><i class="fa fa-plus"></i> <b> Create New Exam</b></button>
+    </div>
+    <br><br>
+
+      <div class="row">
+          <div class="col-lg-4"  *ngFor="let exam of exams">
+              <div class="card card-margin">
+                  <div class="card-header no-border id">
+                      <h3 class="card-title">{{exam.examName}}</h3>
+                  </div>
+                  <div class="card-header no-border code justify-content-between">
+                      <span class="badge bg-light" style="color: black;">Exam Code: {{exam._id}}</span>
+                </div>
+                  <div class="card-body pt-0">
+                      <div class="widget-49">
+                          <div class="widget-49-title-wrapper">
+                              <div class="widget-49-date-success">
+                                  <span class="widget-49-date-day">{{getExamDate(exam.examDate)}}</span>
+                                  <span class="widget-49-date-month">{{getExamMonth(exam.examDate)}}</span>
+                              </div>
+                              <div class="widget-49-meeting-info">
+                                  <h4><span class="widget-49-pro-title">{{userDetails.fullName}}</span></h4>
+                                  <span class="widget-49-meeting-time">Start at {{exam.startTime}}</span>
+                                  <span class="widget-49-meeting-time"><span>Duration: {{exam.duration}} minutes</span></span>
+                              </div>
+                          </div>
+                          <br>
+
+                          <div class="btn-button">
+                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="onClick(exam)">Invite </button>
+                            <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#exampleModalEdit" (click)="onClick(exam)">Edit Exam </button>
+                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModalDel" (click)="onClick(exam)">Delete Exam </button>
+                          </div>
+                          <div class="widget-49-meeting-action">
+                              <a class="btn btn-sm btn-flash-border-success"  routerLink="['teacher/examdetails', '{{exam._id}}']" (click)="viewMoreRouting(exam)">View MORE</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      </div>
+    </div>
+
+    <!--Modal Class-->
+    <!--Invitation-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel">Exam Invitation </h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <b>[Exam Name : {{selectedExam.examName}}]</b>
+            <br>
+            <b>[Exam Code : {{selectedExam._id}}]</b>
+            <br><br>
+            <form>
+              <div class="mb-3">
+                <label for="recipient-email" class="col-form-label"><h6>Student Email:</h6></label>
+                <input type="email" class="form-control" id="recipient-email" placeholder="Email Address" required="" [(ngModel)]="this.recipientEmail" [ngModelOptions]="{standalone: true}">
+              </div>
+              <div class="mb-3">
+                <label for="message-text" class="col-form-label"><h6>Message:</h6></label>
+                <textarea class="form-control" id="message-text" placeholder="Invitation Message"></textarea>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="invite()">Send invitation</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!--Modal Class-->
+    <!--Edit-->
+    <div class="modal fade" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel">Exam Edit </h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <b>[Exam Code : {{selectedExam._id}}]</b>
+              <br><br>
+              <form>
+                <div class="mb-3">
+                  <label for="recipient-name" class="col-form-label"><h6>Exam name:</h6></label>
+                  <input type="text" class="form-control" id="recipient-name" ngDefaultControl [(ngModel)]="selectedExam.examName" [ngModelOptions]="{standalone: true}">
+                </div>
+
+                <div class="mb-3">
+                  <label for="recipient-time" class="col-form-label"><h6>Start Time:</h6></label>
+                  <input type="time" class="form-control" id="recipient-time" ngDefaultControl [(ngModel)]="selectedExam.startTime" [ngModelOptions]="{standalone: true}">
+                </div>
+                <div class="mb-3">
+                    <label for="recipient-date" class="col-form-label"><h6>Exam Date:</h6></label>
+                    <input type="date" class="form-control" id="recipient-date" ngDefaultControl [(ngModel)]="selectedExam.examDate" [ngModelOptions]="{standalone: true}">
+                </div>
+                <div class="mb-3">
+                  <label for="recipient-duration" class="col-form-label"><h6>Exam Duration(In minute):</h6></label>
+                  <input type="text" class="form-control" id="recipient-duration" ngDefaultControl [(ngModel)]="selectedExam.duration" [ngModelOptions]="{standalone: true}">
+              </div>
+              <div class="mb-3">
+                <label for="recipient-duration" class="col-form-label" ><h6>Outsight limit(In second):</h6></label>
+                <input type="text" class="form-control" id="recipient-outsight-limit" placeholder="120" #duration="ngModel" ngDefaultControl [(ngModel)]="selectedExam.outSightTime" [ngModelOptions]="{standalone: true}">
+
+              </div>
+                <div class="mb-3">
+                  <label for="message-text" class="col-form-label"><h6>Message:</h6></label>
+                  <textarea class="form-control" id="message-text" placeholder="Invitation Message"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="message-text" class="col-form-label" ><h6>Question:</h6></label>
+                  <input type="file" class="form-control" id="recipient-duration" placeholder="120" (change)="uploadFile($event)" >
+              </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Discard</button>
+                  <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="update()">Save Change</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Modal -->
+      <!-- Delete -->
+      <div class="modal fade" id="exampleModalDel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Are you confirm to delete exam?
+              <br>
+              <b>[Exam Name : {{selectedExam.examName}}]</b>
+              <br>
+              <b>[Exam Code : {{selectedExam._id}}]</b>
+            </div>
+            <form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="delete()">Yes</button>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+<!-- Modal -->
+<!-- create -->
+<div class="modal fade" id="exampleModalCreate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Exam Create </h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+
+            <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="this.selectedExam._id">
+
+            <div class="mb-3">
+                <label for="message-text" class="col-form-label" ><h6>Exam Name:</h6></label>
+                <input class="form-control" id="message-text" placeholder="Exam Name" #examName="ngModel" ngDefaultControl [(ngModel)]="selectedExam.examName" [ngModelOptions]="{standalone: true}" required>
+              </div>
+            <div class="mb-3">
+              <label for="recipient-time" class="col-form-label" ><h6>Start Time:</h6></label>
+              <input type="time" class="form-control" id="recipient-time" placeholder="09:00AM" #startTime="ngModel" ngDefaultControl [(ngModel)]="selectedExam.startTime" [ngModelOptions]="{standalone: true}" required>
+            </div>
+            <div class="mb-3">
+                <label for="recipient-date" class="col-form-label" ><h6>Exam Date:</h6></label>
+                <input type="date" class="form-control" id="recipient-date" placeholder="11/11/2011" #examDate="ngModel" ngDefaultControl [(ngModel)]="selectedExam.examDate" [ngModelOptions]="{standalone: true}" required>
+            </div>
+            <div class="mb-3">
+              <label for="recipient-duration" class="col-form-label" ><h6>Exam Duration(In minute):</h6></label>
+              <input type="text" class="form-control" id="recipient-duration" placeholder="120" #duration="ngModel" ngDefaultControl [(ngModel)]="selectedExam.duration" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="mb-3">
+            <label for="recipient-duration" class="col-form-label" ><h6>Outsight limit(In second):</h6></label>
+            <input type="text" class="form-control" id="recipient-outsight-limit" placeholder="120" #duration="ngModel" ngDefaultControl [(ngModel)]="selectedExam.outSightTime" [ngModelOptions]="{standalone: true}">
+
+          </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label" ><h6>Message:</h6></label>
+              <textarea class="form-control" id="message-text" placeholder="Invitation Message" #message="ngModel" ngDefaultControl [(ngModel)]="selectedExam.message" [ngModelOptions]="{standalone: true}"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label" ><h6>Question:</h6></label>
+              <input type="file" class="form-control" id="recipient-duration" placeholder="120" (change)="uploadFile($event)" >
+          </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Discard</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="createExam()">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

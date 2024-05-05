@@ -1,0 +1,19 @@
+
+{{index+1}}.
+<div [formGroup]="questionForm" [ngClass]="{ 'correct-answer': status === STATUS.RIGHT, 'wrong-answer': status === STATUS.WRONG }">
+    <mat-form-field>
+        <mat-label>
+            {{ question.question }} - {{ question.fullMarks }}
+        </mat-label>
+        <input
+            matInput
+            type="text"
+            formControlName="{{index.toString()}}"
+        />
+        
+    </mat-form-field>
+</div>
+
+<div *ngIf="status == STATUS.WRONG">
+    Correct answer is {{question.correctAnswer}}
+</div>

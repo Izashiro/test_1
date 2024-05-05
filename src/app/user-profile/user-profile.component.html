@@ -1,0 +1,24 @@
+
+<div class=" main-bg">
+  <br> <br>
+  <div>
+    <h1 class="logo-badge text-center"><span class="fa fa-user-circle"></span></h1>
+    <br>
+    <h4 class="text-name">{{userDetails.fullName}}</h4>
+  </div>
+  <br>
+  <br>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"><b>Email : </b><p class="normal-text">{{userDetails.email}}</p></li>
+    <br>
+    <li class="list-group-item"><b>Institute : </b><p class="normal-text">{{userDetails.institute}}</p></li>
+    <br>
+    <li class="list-group-item"><b>Phone Number : </b><p class="normal-text">{{userDetails.phone_number}}</p></li>
+    <br>
+    <li class="list-group-item" *ngIf="!userDetails.isTeacher"><b>Batch : </b><p class="normal-text">{{userDetails.batch}}</p></li>
+    <br *ngIf="!userDetails.isTeacher">
+    <li class="list-group-item" *ngIf="!userDetails.isTeacher"><b>Roll : </b><p class="normal-text">{{userDetails.roll}}</p></li>
+    <br *ngIf="!userDetails.isTeacher">
+    <li class="list-group-item" *ngIf="userDetails.isTeacher"><b>Designation : </b><p class="normal-text">{{userDetails.designation}}</p></li>
+    <br>
+  </ul>

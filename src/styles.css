@@ -1,0 +1,9 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~ngx-toastr/toastr.css';
+
+a, h1, h2, h3, h4, h5, button, div, img, p{
+  font-family: 'Ubuntu', sans-serif;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

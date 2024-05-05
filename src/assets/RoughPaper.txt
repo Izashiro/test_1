@@ -1,0 +1,14 @@
+User is back on screen
+User has left the screen
+Exam tab not full screened
+Exam tab full screened
+Exam ends for the examinee. Here is the screen record of the examinee
+User has outsighted the screen longer than the limit
+Got disconnected
+
+
+
+
+
+// bug - pdf e click
+//disconnected hoile record pacchi na

@@ -1,0 +1,730 @@
+<div class="main-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-8">
+        <div class="row">
+          <div class="col-6">
+            <h2>{{ examDetails.examName }}</h2>
+            <hr class="cl-head" />
+            <br />
+            <h4>{{ examDetails.teacherName }}</h4>
+            <i class="fa fa-calendar"></i>
+            {{ getExamDate(examDetails.examDate) }}
+            {{ getExamMonth(examDetails.examDate) }} <br />
+            <i class="fa fa-clock"></i> {{ examDetails.startTime }} <br />
+            <i class="fa fa-stopwatch"></i> {{ examDetails.duration }} minutes
+            <br />
+            <br /><br />
+            <div *ngIf="!hide">
+              <button class="btn btn-dark">{{ remHour }}</button> <b> : </b>
+              <button class="btn btn-dark">{{ remMinute }}</button> <b> : </b>
+              <button class="btn btn-dark">{{ remSecond }}</button>
+            </div>
+            
+            <div *ngIf="hide">
+              <button class="btn btn-light">{{ remHour }}</button> <b> : </b>
+              <button class="btn btn-light">{{ remMinute }}</button> <b> : </b>
+              <button class="btn btn-light">{{ remSecond }}</button>
+            </div>
+            <br /><br />
+            <div class="btn-button">
+              <button
+                type="button"
+                class="btn btn-primary mb-2"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+                (click)="onClick(examDetails)"
+              >
+                Invite</button
+              >&nbsp;
+              <button
+                type="button"
+                class="btn btn-warning mb-2"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModalEdit"
+                (click)="onClick(examDetails)"
+              >
+                Edit Exam</button
+              >&nbsp;
+              <button
+                type="button"
+                class="btn btn-danger mb-2"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModalDel"
+                (click)="onClick(examDetails)"
+              >
+                Delete Exam</button
+              >&nbsp;
+              <button
+                type="button"
+                class="btn btn-info mb-2"
+                data-bs-toggle="modal"
+                data-bs-target="#guideModal"
+              >
+                Guidelines</button
+              >&nbsp;
+              <button
+                printSectionId="makePDF"
+                ngxPrint
+                type="button"
+                class="btn btn-secondary mb-2"
+              >
+                Notification Print
+              </button>
+              <button
+                class="btn btn-secondary mb-2"
+                (click)="goTable(selectedExam._id)"
+              >
+                Table View
+              </button>
+
+              <app-mcq-exam></app-mcq-exam>
+
+            </div>
+            <br />
+            <app-conference></app-conference>
+          </div>
+          <div class="col-6">
+            <h2>Participant List&nbsp;&nbsp;<i class="fa fa-users"></i></h2>
+            <hr class="cl-head" />
+            <br />
+            <div *ngFor="let participant of participants">
+              <div class="row">
+                <div class="col-10">
+                  &nbsp;&nbsp;
+                  <span class="fa fa-user-circle"></span>
+                  &nbsp;{{ participant.fullName }}
+                </div>
+                <div class="col-2">
+                  <span
+                    class="fa fa-info-circle"
+                    (click)="studentDetails(participant._id)"
+                  ></span
+                  >&nbsp;
+                  <button
+                    type="button"
+                    class="btn-close"
+                    aria-label="Close"
+                    data-bs-toggle="modal"
+                    data-bs-target="#kickModal"
+                    (click)="onKick(participant)"
+                  ></button>
+                </div>
+              </div>
+              <hr />
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <h4>QUESTION</h4>
+          <object
+            [data]="examDetails.question | safe"
+            type="application/pdf"
+            height="700"
+          ></object>
+        </div>
+        <div class="row chatbox mt-5">
+          <h5>CHAT BOX</h5>
+          <div class="row1">
+            <div
+              class="start mt-3"
+              style="display: flex; justify-content: center"
+            >
+              <span class="badge bg-dark"
+                >Do you have any query? Ask here...</span
+              >
+            </div>
+
+            <div *ngFor="let msg of messageList; let i = index">
+              <div class="row mt-3" *ngIf="!messageList[i].mine">
+                <div class="col-9">
+                  <p>
+                    <span class="badge bg-secondary">{{ msg.userName }}</span>
+                  </p>
+                  <button class="btn btn-outline-secondary text-left" disabled>
+                    {{ msg.message }}
+                  </button>
+                </div>
+                <div class="col-3"></div>
+              </div>
+
+              <div class="row mt-3" *ngIf="messageList[i].mine">
+                <div class="col-3"></div>
+                <div class="col-9 leftSide">
+                  <p>
+                    <span class="badge bg-primary">{{ msg.userName }}</span>
+                  </p>
+                  <button class="btn btn-outline-primary text-left" disabled>
+                    {{ msg.message }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="chatbox__messages" *ngFor="let msg of messageList; let i = index" [ngClass]="{mine: messageList[i].mine}">
+              <div class="user-message">
+                <div class="message-box">
+                  <p class="name">{{ msg.userName }}</p>
+                  <br/>
+                  <p class="message">{{msg.message }}</p>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <div class="row2 row">
+            <div class="col-10">
+              <input
+                type="text"
+                [(ngModel)]="msgDummy.msg"
+                placeholder="Type here"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </div>
+            <div class="col-2">
+              <div class="row">
+                <button class="btn btn-outline-primary" (click)="sendMessage()">
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4" id="makePDF">
+        <h2>Notification&nbsp;&nbsp;<i class="fas fa-bell"></i></h2>
+        <hr class="cl-head" />
+        <br />
+        <ul
+          class="list-group list-group-flush"
+          *ngFor="let notification of notificationList | async"
+        >
+          <li
+            class="list-group-item"
+            style="border: 1px solid #1363bf; border-radius: 5px"
+          >
+            Suspicious Activity
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <!-- <b>Just Now </b><br> -->
+            <hr />
+            Student Name: {{ notification.fullName }} <br />
+            Time: {{ notification.time }} <br />
+            Detection: {{ notification.message }}
+            <div
+              *ngIf="
+                notification.screenRecord != '' ||
+                notification.cameraRecord != ''
+              "
+            >
+              Evidence:
+            </div>
+            <a
+              href="{{ notification.screenRecord }}"
+              *ngIf="notification.screenRecord != ''"
+              target="_blank"
+              >Screen Record</a
+            >
+            &nbsp;&nbsp;
+            <a
+              href="{{ notification.cameraRecord }}"
+              *ngIf="notification.cameraRecord != ''"
+              target="_blank"
+              >Camera Footage</a
+            >
+          </li>
+          <br />
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal Class-->
+<!--Invitation-->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel">Exam Invitation</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <b>[Exam Name : {{ selectedExam.examName }}]</b>
+        <br />
+        <b>[Exam Code : {{ selectedExam._id }}]</b>
+        <br /><br />
+        <form>
+          <div class="mb-3">
+            <label for="recipient-email" class="col-form-label"
+              ><h6>Student Email:</h6></label
+            >
+            <input
+              type="email"
+              class="form-control"
+              id="recipient-email"
+              placeholder="Email Address"
+              required=""
+              [(ngModel)]="this.recipientEmail"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label"
+              ><h6>Message:</h6></label
+            >
+            <textarea
+              class="form-control"
+              id="message-text"
+              placeholder="Invitation Message"
+            ></textarea>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="submit"
+              class="btn btn-success"
+              data-bs-dismiss="modal"
+              (click)="invite()"
+            >
+              Send invitation
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal Class-->
+<!--Edit-->
+<div
+  class="modal fade"
+  id="exampleModalEdit"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel">Exam Edit</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <b>[Exam Code : {{ selectedExam._id }}]</b>
+        <br /><br />
+        <form>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label"
+              ><h6>Exam name:</h6></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="recipient-name"
+              ngDefaultControl
+              [(ngModel)]="selectedExam.examName"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="recipient-time" class="col-form-label"
+              ><h6>Start Time:</h6></label
+            >
+            <input
+              type="time"
+              class="form-control"
+              id="recipient-time"
+              ngDefaultControl
+              [(ngModel)]="selectedExam.startTime"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="recipient-date" class="col-form-label"
+              ><h6>Exam Date:</h6></label
+            >
+            <input
+              type="date"
+              class="form-control"
+              id="recipient-date"
+              ngDefaultControl
+              [(ngModel)]="selectedExam.examDate"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="recipient-duration" class="col-form-label"
+              ><h6>Exam Duration(In minute):</h6></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="recipient-duration"
+              ngDefaultControl
+              [(ngModel)]="selectedExam.duration"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <label for="recipient-duration" class="col-form-label"
+              ><h6>Valid Outsight Time(In second):</h6></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="recipient-duration"
+              ngDefaultControl
+              [(ngModel)]="selectedExam.outSightTime"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label"
+              ><h6>Message:</h6></label
+            >
+            <textarea
+              class="form-control"
+              id="message-text"
+              placeholder="Invitation Message"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label"
+              ><h6>Question:</h6></label
+            >
+            <input
+              type="file"
+              class="form-control"
+              id="recipient-duration"
+              placeholder="120"
+              (change)="uploadFile($event)"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Discard
+            </button>
+            <button
+              type="submit"
+              class="btn btn-success"
+              data-bs-dismiss="modal"
+              (click)="update()"
+            >
+              Save Change
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<!-- Delete -->
+<div
+  class="modal fade"
+  id="exampleModalDel"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Are you confirm to delete exam?
+        <br />
+        <b>[Exam Name : {{ selectedExam.examName }}]</b>
+        <br />
+        <b>[Exam Code : {{ selectedExam._id }}]</b>
+      </div>
+      <form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            No
+          </button>
+          <button
+            type="submit"
+            class="btn btn-success"
+            data-bs-dismiss="modal"
+            (click)="delete()"
+          >
+            Yes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<!-- create -->
+<div
+  class="modal fade"
+  id="exampleModalCreate"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel">Exam Create</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <input
+            type="hidden"
+            name="_id"
+            #_id="ngModel"
+            [(ngModel)]="this.selectedExam._id"
+          />
+
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label"
+              ><h6>Exam Name:</h6></label
+            >
+            <input
+              class="form-control"
+              id="message-text"
+              placeholder="Exam Name"
+              #examName="ngModel"
+              ngDefaultControl
+              [(ngModel)]="selectedExam.examName"
+              [ngModelOptions]="{ standalone: true }"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="recipient-time" class="col-form-label"
+              ><h6>Start Time:</h6></label
+            >
+            <input
+              type="time"
+              class="form-control"
+              id="recipient-time"
+              placeholder="09:00AM"
+              #startTime="ngModel"
+              ngDefaultControl
+              [(ngModel)]="selectedExam.startTime"
+              [ngModelOptions]="{ standalone: true }"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="recipient-date" class="col-form-label"
+              ><h6>Exam Date:</h6></label
+            >
+            <input
+              type="date"
+              class="form-control"
+              id="recipient-date"
+              placeholder="11/11/2011"
+              #examDate="ngModel"
+              ngDefaultControl
+              [(ngModel)]="selectedExam.examDate"
+              [ngModelOptions]="{ standalone: true }"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="recipient-duration" class="col-form-label"
+              ><h6>Exam Duration(In minute):</h6></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="recipient-duration"
+              placeholder="120"
+              #duration="ngModel"
+              ngDefaultControl
+              [(ngModel)]="selectedExam.duration"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="recipient-duration" class="col-form-label"
+              ><h6>Outsight limit(In second):</h6></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="recipient-outsight-limit"
+              placeholder="120"
+              #duration="ngModel"
+              ngDefaultControl
+              [(ngModel)]="selectedExam.outSightTime"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label"
+              ><h6>Message:</h6></label
+            >
+            <textarea
+              class="form-control"
+              id="message-text"
+              placeholder="Invitation Message"
+              #message="ngModel"
+              ngDefaultControl
+              [(ngModel)]="selectedExam.message"
+              [ngModelOptions]="{ standalone: true }"
+            ></textarea>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Discard
+            </button>
+            <button
+              type="button"
+              class="btn btn-success"
+              data-bs-dismiss="modal"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal
+  kick -->
+<div
+  class="modal fade"
+  id="kickModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Kick Confirmation</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Are you sure to kick examinee? The examinee won't be able to join again!
+        <br />
+        <b>[Examinee Name : {{ kickParticipant.fullName }}]</b>
+        <br />
+        <b>[Examinee Email : {{ kickParticipant.email }}]</b>
+      </div>
+      <form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            No
+          </button>
+          <button
+            type="submit"
+            class="btn btn-success"
+            data-bs-dismiss="modal"
+            (click)="kick()"
+          >
+            Yes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- modal
+  guideline -->
+<div
+  class="modal fade"
+  id="guideModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Guidelines</h5>
+      </div>
+      <div class="modal-body">
+        <input type="checkbox" checked /> As soon as an examinee is detected to
+        be suspicious, you will receive a notification. <br />
+        <input type="checkbox" checked /> New notifications can be found at the
+        bottom of the notification column. <br />
+        <input type="checkbox" checked /> You will receive notification once an
+        examinee. <br />
+        <ul>
+          <li>Tries to change the screen.</li>
+          <li>Comes back to to the exam tab.</li>
+          <li>
+            Outsights the screen longer than the limit you specified containing
+            the video footage of examinee's camera.
+          </li>
+          <li>Gets disconnected</li>
+          <li>
+            Default notification containing the screen record of the entire exam
+            of the examinee.
+          </li>
+        </ul>
+        <input type="checkbox" checked /> Clicking on the evidence URLs will
+        direct you towards a page that plays the evidences.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

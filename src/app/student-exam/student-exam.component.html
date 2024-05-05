@@ -1,0 +1,118 @@
+<div class="exam">
+  <br><br><br>
+  <div class="calibrationDiv" *ngIf="!calibrationDone && stepDone >= 5">
+
+    <input type="button" (click)="calibrationClick(0)" class="calibration" id="pt1" style="background-color: red; opacity: 0.2">
+    <input type="button" (click)="calibrationClick(1)" class="calibration" id="pt2" style="background-color: red; opacity: 0.2">
+    <input type="button" (click)="calibrationClick(2)" class="calibration" id="pt3" style="background-color: red; opacity: 0.2">
+    <input type="button" (click)="calibrationClick(3)" class="calibration" id="pt4" style="background-color: red; opacity: 0.2">
+    <input type="button" (click)="calibrationClick(4)" class="calibration" id="pt5" style="background-color: red; opacity: 0.2">
+    <input type="button" (click)="calibrationClick(5)" class="calibration" id="pt6" style="background-color: red; opacity: 0.2">
+    <input type="button" (click)="calibrationClick(6)" class="calibration" id="pt7" style="background-color: red; opacity: 0.2">
+    <input type="button" (click)="calibrationClick(7)" class="calibration" id="pt8" style="background-color: red; opacity: 0.2">
+    <input type="button" (click)="calibrationClick(8)" class="calibration" id="pt9" style="background-color: red; opacity: 0.2">
+  </div>
+
+
+  <div class="afterCalibration" *ngIf="calibrationDone">
+    <div class="row">
+      <div class="col-1"> </div>
+      <div class="col-4">
+        <br><br><br>
+        <div class="clockdown">
+          Exam Remaining Time:
+          <div *ngIf="!hide">
+            <button class="btn btn-dark">{{remHour}}</button> <b> : </b>
+            <button class="btn btn-dark"> {{remMinute}} </button> <b> : </b>
+            <button class="btn btn-dark">{{remSecond}}</button>
+          </div>
+          <div *ngIf="hide">
+            <button class="btn btn-light">{{remHour}}</button> <b> : </b>
+            <button class="btn btn-light"> {{remMinute}} </button> <b> : </b>
+            <button class="btn btn-light">{{remSecond}}</button>
+          </div>
+        </div>
+        <br><br>
+
+        <div class="col-6">
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label" ><h6>Answer:</h6></label>
+            <input type="file" class="form-control" id="recipient-duration" placeholder="120" (change)="uploadFile($event)" >
+        </div>
+          <button class="btn btn-success" (click)="submitAnswer()">Submit Answer</button>
+        </div>
+        <app-call></app-call>
+
+        <div class="manual">
+          <h4>GUIDELINES</h4>
+          <hr class="cl-head">
+          <h5>During the exam -</h5>
+          <input type="checkbox" checked> You must keep the !BLINK tab full of your entire screen. <br>
+          <input type="checkbox" checked> You can not change the exam tab. <br>
+          <input type="checkbox" checked> Changing a tab will send notification towards the to the teacher. <br>
+          <input type="checkbox" checked> Screen recond will be sent once exam ends. <br>
+          <input type="checkbox" checked> You can't outsight screen for more than {{examDetails.outSightTime}} seconds. <br>
+          <input type="checkbox" checked> Your camera footage will be sent to teacher as soon as you are detected to be suspicious.
+        </div>
+        <br><br>
+
+        <div class="row chatbox mt-5">
+          <h5>CHAT BOX</h5>
+          <div class="row1">
+            <div class="start mt-3" style="display: flex; justify-content: center;">
+              <span class="badge bg-primary">Do you have any query? Ask here...</span>
+            </div>
+            <!-- <div class="row mt-3">
+              <div class="col-9">
+                <button class="btn btn-outline-secondary text-left">Hi how are you</button>
+              </div>
+              <div class="col-3"></div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-3"></div>
+              <div class="col-9 leftSide">
+                <button class="btn btn-outline-dark text-left"> Fine and ypuFine and ypuFine and ypuFine and ypuFine and ypu</button>
+              </div>
+            </div> -->
+            <div class="chatbox__messages" *ngFor="let msg of messageList; let i = index" [ngClass]="{mine: messageList[i].mine}">
+              <div class="user-message">
+                <div class="message-box">
+                  <p class="name">{{ msg.userName }}</p>
+                  <br/>
+                  <p class="message">{{ msg.message }}</p>
+                </div>
+              </div>
+            </div>
+          
+          </div>
+          <div class="row2 row">
+            <div class="col-10">
+              <input type="text" [(ngModel)]="msgDummy.msg" placeholder="Type here">
+            </div>
+            <div class="col-2">
+              <div class="row">
+               <button class="btn btn-outline-success" (click)="sendMessage()"><b>Send</b></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <button class="btn btn-warning" (click)="endExam()">Leave Exam</button>
+        <div class="row mt-5">
+          <object [data]="examDetails.question | safe" type="application/pdf" height="700"> </object>
+        </div>
+      </div>
+      <div class="col-1">
+      </div>
+    </div>
+  </div>
+
+  <app-eye-track *ngIf="stepDone >= 5"></app-eye-track>
+  <app-call></app-call>
+</div>
+
+
+
